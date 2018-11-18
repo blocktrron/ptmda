@@ -10,7 +10,6 @@ def create_app():
     connector = RemoteConnector('https://routing.geomobile.de/v4', 'de.ivanto.heagmobilo')
     connector.update_lineplans()
     connector.update_mapobjects(49.872781, 8.651077, 7500)
-    update_interval = 30
 
     @app.route('/')
     def show_page():
@@ -46,7 +45,11 @@ def create_app():
 
     @app.after_request
     def add_header(response):
-        response.cache_control.max_age = update_interval
+        '''
+        Cache for 29 seconds. Clients request every 30 seconds, the same value here can lead to clients generating a
+        cache-hit which we don't want.
+        '''
+        response.cache_control.max_age = 25
         return response
 
     return app
