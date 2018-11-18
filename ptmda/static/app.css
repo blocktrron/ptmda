@@ -1,0 +1,58 @@
+html, body {
+    min-height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+}
+
+div.map-wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+div#map {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.vehicle {
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    font-size: 7pt;
+}
+
+.vehicle-bearing {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: url(background.png) 0 0 repeat;
+    background-size: cover;
+    transform: rotate(0deg);
+}
+
+.vehicle-bus {
+    background-color: #2196f3;
+}
+
+.vehicle-tram {
+    background-color: #ff5722;
+}
+
+.vehicle-other {
+    background-color: #9e9e9e;
+}
+
+.popup-cordinates {
+    opacity: 0.6;
+}
