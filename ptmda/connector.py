@@ -36,7 +36,7 @@ class RemoteConnector:
         if r.status_code != requests.codes.ok:
             raise RequestException()
 
-        self.map_objects = parse_map_objects(json.loads(r.content))
+        self.map_objects = parse_map_objects(json.loads(r.text))
 
         return True
 
@@ -48,6 +48,6 @@ class RemoteConnector:
         if r.status_code != requests.codes.ok:
             raise RequestException()
 
-        self.ways, self.relations = parse_lineplans(json.loads(r.content))
+        self.ways, self.relations = parse_lineplans(json.loads(r.text))
 
         return True
