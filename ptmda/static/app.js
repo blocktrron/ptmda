@@ -187,12 +187,12 @@ $(document).ready(function () {
     }
 
 
-    tile_layers["OpenStreetMap"] = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    tile_layers["OpenStreetMap"] = new L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         minZoom: 3, maxZoom: 18,
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     });
 
-    tile_layers["ÖPNV"] = new L.TileLayer('http://tile.memomaps.de/tilegen/{z}/{x}/{y}.png', {
+    tile_layers["ÖPNV"] = new L.TileLayer('https://tile.memomaps.de/tilegen/{z}/{x}/{y}.png', {
         minZoom: 3, maxZoom: 18,
         attribution: '&copy; <a href="http://memomaps.de/">ÖPNV Karte</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     });
