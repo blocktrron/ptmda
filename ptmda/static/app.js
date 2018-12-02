@@ -4,9 +4,11 @@ $(document).ready(function () {
     var tile_layers = {};
 
     // Map object layers
-    var vehicle_layer = new L.FeatureGroup();
-    var map_object_layer = new L.FeatureGroup();
-    var line_route_layer = new L.FeatureGroup();
+    var overlay_layers = {
+        "Fahrzeuge": new L.FeatureGroup(),
+        "Haltestellen": new L.FeatureGroup(),
+        "Strecken": new L.FeatureGroup()
+    };
 
     // Stores current vehicle route GeoJSON
     var current_vehicle_route;
@@ -42,14 +44,14 @@ $(document).ready(function () {
     function onVehicleClick(e) {
         selected_vehicle_reference = this.options.properties.line;
         current_vehicle_route = L.geoJSON(line_routes.waypoints, {filter: filterLine});
-        line_route_layer.addLayer(current_vehicle_route);
+        overlay_layers["Strecken"].addLayer(current_vehicle_route);
     }
 
     /*
      * Called when a vehicles popup gets closed. Removes the vehicles route from the map.
      */
     function onPopupClose(e) {
-        line_route_layer.removeLayer(current_vehicle_route);
+        overlay_layers["Strecken"].removeLayer(current_vehicle_route);
     }
 
     /*
@@ -128,7 +130,7 @@ $(document).ready(function () {
                             rawData: item
                         };
 
-                        vehicle_layer.addLayer(vehicles[item.vehicleId].marker);
+                        overlay_layers["Fahrzeuge"].addLayer(vehicles[item.vehicleId].marker);
                     } else {
                         // Upate existing vehicle
                         vehicles[item.vehicleId].marker._popup.setContent(popup_content);
@@ -147,7 +149,7 @@ $(document).ready(function () {
                     // Remove inactive vehicle
                     if (vehicles.hasOwnProperty(vehicleId)) {
                         if (vehicles[vehicleId].lastAppearance < update_count) {
-                            vehicle_layer.removeLayer(vehicles[vehicleId].marker);
+                            overlay_layers["Fahrzeuge"].removeLayer(vehicles[vehicleId].marker);
                             delete vehicles[vehicleId];
                         }
                     }
@@ -180,7 +182,7 @@ $(document).ready(function () {
                         var marker = L.marker([item.lat, item.lon]).bindPopup(popup_content);
                         marker.setIcon(icon);
                         var ao = {marker: marker};
-                        map_object_layer.addLayer(ao.marker);
+                        overlay_layers["Haltestellen"].addLayer(ao.marker);
                     }
                 })
             })
@@ -207,12 +209,11 @@ $(document).ready(function () {
     });
 
     // Add tile-layer control
-    L.control.layers(tile_layers, {}).addTo(map);
+    L.control.layers(tile_layers, overlay_layers).addTo(map);
 
     // Add object-layers
-    map.addLayer(vehicle_layer);
-    map.addLayer(map_object_layer);
-    map.addLayer(line_route_layer);
+    map.addLayer(overlay_layers["Fahrzeuge"]);
+    map.addLayer(overlay_layers["Strecken"]);
 
     restoreMapView();
     updateVehicles();
