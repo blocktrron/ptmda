@@ -199,7 +199,7 @@ $(document).ready(function () {
         attribution: '&copy; <a href="http://memomaps.de/">ÖPNV Karte</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     });
 
-    map = L.map('map', {center: [49.872906, 8.651617], zoom: 10, layers: [tile_layers["ÖPNV"]]});
+    map = L.map('map', {center: [49.872906, 8.651617], zoom: 10, layers: [tile_layers["OpenStreetMap"]]});
 
     map.on('moveend', function () {
         var mapPos = map.getCenter();
