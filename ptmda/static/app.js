@@ -216,7 +216,6 @@ $(document).ready(function () {
         var mapPos = map.getCenter();
         var mapZoom = map.getZoom();
         var url = window.location.href.split('#')[0] + '#' + mapPos.lat + ';' + mapPos.lng + ';' + mapZoom;
-        history.pushState('', '', url);
     });
 
     // Add tile-layer control
