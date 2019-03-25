@@ -29,13 +29,24 @@ $(document).ready(function () {
      *
      * Format:
      * #<lat>;<lon>;<zoom>
+     *
+     * Returns true in case a position can be extracted, false if not.
      */
     function restoreMapView() {
         var map_pos_params = /[#]([0-9]+[\.][0-9]*)[;]([0-9]+[\.][0-9]*)[;]([0-9]+)/g.exec(window.location.href);
         if (map_pos_params !== null) {
             map.panTo([map_pos_params[1], map_pos_params[2]]);
             map.setZoom(map_pos_params[3]);
+            return true
         }
+        return false
+    }
+
+    /*
+     * Starts geolocation process
+     */
+    function startGeolocation() {
+        map.locate({setView: true, maxZoom: 15});
     }
 
     /*
@@ -215,7 +226,10 @@ $(document).ready(function () {
     map.addLayer(overlay_layers["Fahrzeuge"]);
     map.addLayer(overlay_layers["Strecken"]);
 
-    restoreMapView();
+    // First, try to restore the view. If this is not possible try to geolocate.
+    if (!restoreMapView()) {
+        startGeolocation();
+    }
     updateVehicles();
     updateStops();
     updateLineplans();
