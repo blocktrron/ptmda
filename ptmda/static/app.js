@@ -199,18 +199,19 @@ $(document).ready(function () {
             })
     }
 
-
-    tile_layers["OpenStreetMap"] = new L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        minZoom: 3, maxZoom: 18,
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    config.tiles.forEach(function (item, idx) {
+        tile_layers[item.name] = new L.tileLayer(item.url, {
+            minZoom: item.minZoom,
+            maxZoom: item.maxZoom,
+            attribution: item.attribution
+        });
     });
 
-    tile_layers["ÖPNV"] = new L.TileLayer('https://tile.memomaps.de/tilegen/{z}/{x}/{y}.png', {
-        minZoom: 3, maxZoom: 18,
-        attribution: '&copy; <a href="http://memomaps.de/">ÖPNV Karte</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    map = L.map('map', {
+        center: config.default_position,
+        zoom: config.default_zoom,
+        layers: [tile_layers[config.default_tiles]]
     });
-
-    map = L.map('map', {center: [49.872906, 8.651617], zoom: 10, layers: [tile_layers["OpenStreetMap"]]});
 
     map.on('moveend', function () {
         var mapPos = map.getCenter();
