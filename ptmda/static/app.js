@@ -146,6 +146,7 @@ $(document).ready(function () {
                         // Upate existing vehicle
                         vehicles[item.vehicleId].marker._popup.setContent(popup_content);
                         vehicles[item.vehicleId].marker.setIcon(icon);
+                        vehicles[item.vehicleId].marker.options.properties.line = item.line;
                         vehicles[item.vehicleId].lastAppearance = update_count;
 
                         // Start movement animation
