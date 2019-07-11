@@ -23,6 +23,58 @@ $(document).ready(function () {
 
     var selected_vehicle_reference = null;
 
+    var vehicle_information = [
+        {
+            "id_start": 15,
+            "id_end": 24,
+            "id_prefix": "91",
+            "features": []
+        },
+        {
+            "id_start": 55,
+            "id_end": 74,
+            "id_prefix": "98",
+            "features": ["LOW_FLOOR"]
+        },
+        {
+            "id_start": 75,
+            "id_end": 92,
+            "id_prefix": "07",
+            "features": ["LOW_FLOOR", "AIR_CONDITIONING"]
+        }
+    ];
+
+    function getVehicleInformation(vehicle_id) {
+        var vid = parseInt(vehicle_id);
+        var output = null;
+        vehicle_information.forEach(function (information) {
+            var id_start = information.id_start;
+            var id_end = information.id_end;
+            if (vid <= id_end && vid >= id_start)
+                output = information;
+        });
+        return output;
+    }
+
+    function formatVehicleId(vehicle_id) {
+        var information = getVehicleInformation(vehicle_id);
+        return information == null ? vehicle_id : information["id_prefix"] + vehicle_id;
+    }
+
+    function generateVehicleFeatures(vehicle_id) {
+        var out_string = "";
+        var information = getVehicleInformation(vehicle_id);
+        if (information == null || !information.hasOwnProperty("features"))
+            return out_string;
+        if (information.features.indexOf("AIR_CONDITIONING") > -1) {
+            out_string += "<i class=\"fas fa-wind\"></i>";
+        }
+        if (information.features.indexOf("LOW_FLOOR") > -1) {
+            out_string += "<i class=\"fas fa-baby-carriage\"></i>";
+        }
+        return out_string;
+    }
+
     /*
      * Restores the map-view from URL params.
      * This is required to allow bookmarking a specific location.
@@ -111,7 +163,8 @@ $(document).ready(function () {
                     }
 
                     var popup_content = "<strong>" + vehicle_type + " " + item.line + " - " + item.lastStop + "</strong><br>" +
-                        "Fahrzeug: " + item.vehicleId + "<br>" +
+                        "Fahrzeug: " + formatVehicleId(item.vehicleId) + "<br>" +
+                        generateVehicleFeatures(item.vehicleId) + "<br>" +
                         "<span class='popup-cordinates'>" + item.latitude + ", " + item.longitude + "</span>";
 
                     var icon = L.divIcon({
